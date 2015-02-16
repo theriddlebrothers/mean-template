@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAEA,IAAK;EACJ,UAAU,EAHK,IAAI",
+"sources": ["../../src/style/main.scss"],
+"names": [],
+"file": "dist.css"
+}
