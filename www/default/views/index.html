@@ -1,22 +1,27 @@
 <!doctype html>
-<html ng-app>
+<html ng-app="rb">
   <head>
-    <meta charset="utf-8">
-    <title>AngularJS Email App</title>
-    <link href="/dist/style/main.css" rel="stylesheet">
+	<meta charset="utf-8">
+	<title>AngularJS Email App</title>
+	<link href="/dist/style/dist.css" rel="stylesheet">
 	<script src="/dist/js/_bower.js"></script>
-	<script src="/dist/js/ats.min.js"></script>
+
+	<!-- todo -->
+	<script>
+		var RB = angular.module('rb', []);
+	</script>
+	<script src="/dist/js/controllers.js"></script>
   </head>
   <body>
-    <div ng-controller="TestCtrl">
-        <h1>{{title}}</h1>
-        <input type="text" ng-model="title" placeholder="Write a title here">
-    </div>
+	<div ng-controller="TestCtrl">
+		<h1>{{title}}</h1>
+		<input type="text" ng-model="title" placeholder="Write a title here">
 
-    <script>
-      function TestCtrl($scope) {
-        $scope.title = "Example title! (Change or delete me)";
-      }
-    </script>
+		<ul>
+			<li ng-repeat="task in tasks">
+				<span>{{task.description}}</span>
+			</li>
+		</ul>
+	</div>
   </body>
 </html>

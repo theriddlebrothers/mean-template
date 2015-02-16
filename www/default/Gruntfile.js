@@ -4,17 +4,14 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		// JS TASKS ================================================================
-	    // check all js files for errors
-	    jshint: {
-	      all: ['public/src/js/**/*.js'] 
-	    },
-		uglify: {
-			options: {
-				banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
-			},
-			build: {
-				src: 'public/src/js/**/*.js',
-				dest: 'public/dist/js/<%= pkg.name %>.min.js'
+		// check all js files for errors
+		jshint: {
+		  all: ['public/src/js/**/*.js'] 
+		},
+		ngmin: {
+			controllers: {
+				src: ['public/src/js/controllers/*.js'],
+				dest: 'public/dist/js/controllers.js'
 			}
 		},
 		bower_concat: {
@@ -32,7 +29,7 @@ module.exports = function(grunt) {
 			default : {
 				options : {
 					style: 'expanded',
-					compass: true
+					compass: false
 				},
 				files: {
 					"public/dist/style/dist.css": "public/src/style/**/*.scss"
@@ -42,7 +39,7 @@ module.exports = function(grunt) {
 		watch: {
 			scripts: {
 				files: ['public/src/**/*'],
-				tasks: ['jshint', 'sass', 'uglify'],
+				tasks: ['jshint', 'sass', 'ngmin'], //tasks: ['jshint', 'sass', 'uglify'], // uglify disabled for angular (look into ng-compatible uglify)
 				options: {
 				  spawn: false,
 				}
@@ -64,17 +61,17 @@ module.exports = function(grunt) {
 		}   
 	});
 
-	// Load the plugin that provides the "uglify" task.
 	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-contrib-uglify');
+	//grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-sass');
 	grunt.loadNpmTasks('grunt-bower-concat');
 	grunt.loadNpmTasks('grunt-contrib-watch');
- 	grunt.loadNpmTasks('grunt-nodemon');
- 	grunt.loadNpmTasks('grunt-concurrent');
+	grunt.loadNpmTasks('grunt-nodemon');
+	grunt.loadNpmTasks('grunt-concurrent');
+	grunt.loadNpmTasks('grunt-ngmin');
 
 	// Default task(s).
 	grunt.registerTask('default', ['bower_concat', 'concurrent']);
-	grunt.registerTask('prod', ['bower_concat', 'jshint', 'uglify', 'less']);
+	//grunt.registerTask('prod', ['bower_concat', 'jshint', 'uglify', 'less']);
 
 };
