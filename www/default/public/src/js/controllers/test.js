@@ -1,6 +1,7 @@
-RB.controller('TestCtrl', function ($scope) {
-    $scope.title = "Example title! (Change or delete me)";
-	$scope.tasks = [
-		{ "description" : "Pick up dryclean"}, { "description" : "Do homework" }
-	];
-});
+RB.controller('TestCtrl', ['$scope', '$http', function ($scope, $http) {
+    $scope.title = "My Tasks";
+	
+	$http.get('stubs/tasks.json').success(function(data) {
+		$scope.tasks = data;
+	});
+}]);

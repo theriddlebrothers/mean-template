@@ -8,10 +8,13 @@ module.exports = function(grunt) {
 		jshint: {
 		  all: ['public/src/js/**/*.js'] 
 		},
-		ngmin: {
-			controllers: {
-				src: ['public/src/js/controllers/*.js'],
-				dest: 'public/dist/js/controllers.js'
+		uglify: {
+			options: {
+				banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+			},
+			build: {
+				src: 'public/src/js/**/*.js',
+				dest: 'public/dist/js/<%= pkg.name %>.min.js'
 			}
 		},
 		bower_concat: {
@@ -39,7 +42,7 @@ module.exports = function(grunt) {
 		watch: {
 			scripts: {
 				files: ['public/src/**/*'],
-				tasks: ['jshint', 'sass', 'ngmin'], //tasks: ['jshint', 'sass', 'uglify'], // uglify disabled for angular (look into ng-compatible uglify)
+				tasks: ['jshint', 'sass', 'uglify'],
 				options: {
 				  spawn: false,
 				}
@@ -62,16 +65,15 @@ module.exports = function(grunt) {
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-jshint');
-	//grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-sass');
 	grunt.loadNpmTasks('grunt-bower-concat');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-nodemon');
 	grunt.loadNpmTasks('grunt-concurrent');
-	grunt.loadNpmTasks('grunt-ngmin');
 
 	// Default task(s).
 	grunt.registerTask('default', ['bower_concat', 'concurrent']);
-	//grunt.registerTask('prod', ['bower_concat', 'jshint', 'uglify', 'less']);
+	grunt.registerTask('prod', ['bower_concat', 'jshint', 'uglify', 'sass']);
 
 };
