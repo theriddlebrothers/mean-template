@@ -4,9 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var routes = require('./routes/index');
-var users = require('./routes/users');
-
+var config = require('./config/app.js');
 var app = express();
 
 // view engine setup
@@ -23,8 +21,20 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', users);
+// database
+var monk = require('monk');
+var db = monk(config.db.url);
+
+// Make our db accessible to our router
+app.use(function(req, res, next){
+    req.db = db;
+    next();
+});
+
+// routes
+app.use('/', require('./routes/index'));
+app.use('/api/documents', require('./routes/documents'));
+app.use('/api/users', require('./routes/users'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

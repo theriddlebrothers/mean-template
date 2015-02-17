@@ -1,0 +1,22 @@
+/* theme.scss */
+
+.glyphicon {
+	color:#444;
+}
+
+.status {
+	border-radius: 50%; /* the magic */
+	-moz-border-radius: 50%;
+	-webkit-border-radius: 50%;
+	display:inline-block;
+	width: 20px;
+	height: 20px; 
+}
+
+.status-active {
+	background-color:#74D074;
+}
+
+.status-inactive {
+	background-color:#f06969;
+}

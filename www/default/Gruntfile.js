@@ -8,6 +8,16 @@ module.exports = function(grunt) {
 		jshint: {
 		  all: ['public/src/js/**/*.js'] 
 		},
+		copy : {
+			target : {
+				expand: true,
+				cwd: 'public/src/fonts/',
+				src: '**',
+				dest: 'public/dist/fonts/',
+				flatten: true,
+				filter: 'isFile',
+			}
+		},
 		uglify: {
 			options: {
 				banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
@@ -35,14 +45,14 @@ module.exports = function(grunt) {
 					compass: false
 				},
 				files: {
-					"public/dist/style/dist.css": "public/src/style/**/*.scss"
+					"public/dist/style/dist.css": "public/src/style/main.scss"
 				}
 			}
 		},
 		watch: {
 			scripts: {
 				files: ['public/src/**/*'],
-				tasks: ['jshint', 'sass', 'uglify'],
+				tasks: ['jshint', 'sass', 'copy', 'uglify'],
 				options: {
 				  spawn: false,
 				}
@@ -66,6 +76,7 @@ module.exports = function(grunt) {
 
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-sass');
 	grunt.loadNpmTasks('grunt-bower-concat');
 	grunt.loadNpmTasks('grunt-contrib-watch');
