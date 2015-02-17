@@ -6,7 +6,7 @@ describe('RB controllers', function() {
 		beforeEach(module('rb'));
 		beforeEach(module('rbServices'));
 
-		beforeEach(inject(function(_$httpBackend_, $rootScope, $controller) {
+		beforeEach(inject(function($httpBackend, $rootScope, $controller) {
 			scope = $rootScope.$new();
 			log = { log : function() {} };
 			ctrl = $controller('DashboardCtrl', { $scope:scope, $log:log });

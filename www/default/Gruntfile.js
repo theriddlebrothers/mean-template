@@ -22,7 +22,7 @@ module.exports = function(grunt) {
 			options: {
 				banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
 			},
-			default: {
+			all: {
 				src: 'public/src/js/**/*.js',
 				dest: 'public/dist/js/<%= pkg.name %>.min.js'
 			}
@@ -39,7 +39,7 @@ module.exports = function(grunt) {
 			}
 		},
 		sass : {
-			default : {
+			all : {
 				options : {
 					style: 'expanded',
 					compass: false
@@ -50,16 +50,29 @@ module.exports = function(grunt) {
 			}
 		},
 		watch: {
-			files: ['public/src/**/*'],
-			tasks: ['jshint', 'copy', 'uglify', 'sass'],
-			options: {
-				spawn: false,
+			js : {
+				files: ['public/src/js/**/*.js'],
+				tasks: ['jshint', 'uglify'],
+				options: {
+					spawn: false,
+				}
+			},
+			css : {
+				files: ['public/src/style/**/*'],
+				tasks: ['sass'],
+				options: {
+					spawn: false,
+				}
 			}
 		},		
 		// watch our node server for changes
 		nodemon: {
-			default: {
-				script: 'bin/www'
+			all: {
+				script: 'bin/www',
+				options : {
+					ignore : ['node_modules/**', 'public/**', '.sass_cache/']
+				}
+				//watch: ['server.js', 'routes/*.js', 'lib/**/*', 'config/**/*']
 			}
 		},
 		// run watch and nodemon at the same time
@@ -100,8 +113,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-karma');
 	grunt.loadNpmTasks('grunt-protractor-runner');
 
-	// Default task(s).
-	grunt.registerTask('default', ['bower_concat', 'concurrent']);
+	grunt.registerTask('all', ['bower_concat', 'copy', 'concurrent']);
 	grunt.registerTask('test-unit', ['karma']);
 	grunt.registerTask('test-e2e', ['protractor']);
 	grunt.registerTask('prod', ['bower_concat', 'jshint', 'uglify', 'sass']);

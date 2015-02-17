@@ -1,8 +1,8 @@
 angular.module('rbControllers').controller('UserListCtrl', ['$rootScope', '$scope', '$log', 'User', function ($rootScope, $scope, $log, User) {
 	$rootScope.title = "Users";
 	$rootScope.activeMenu = "users";
-	
-	var query = function() {
+
+	var query = function() { 
 		$log.log('Retrieving users...');
 		User.query({
 			page : $scope.page,
@@ -18,7 +18,6 @@ angular.module('rbControllers').controller('UserListCtrl', ['$rootScope', '$scop
 	};
 
 	$scope.pageChanged = function() {
-		$log.log('Page changed to: ' + $scope.page);
 		query();
 	};
 
@@ -27,6 +26,15 @@ angular.module('rbControllers').controller('UserListCtrl', ['$rootScope', '$scop
 }]);
 
 
-angular.module('rbControllers').controller('UserDetailCtrl', ['$scope', '$routeParams', function($scope, $routeParams) {
+angular.module('rbControllers').controller('UserDetailCtrl', ['$rootScope', '$scope', '$log', '$routeParams', 'User', function ($rootScope, $scope, $log, $routeParams, User) {
+	$rootScope.title = "User Details";
+	$rootScope.activeMenu = "users";
+	
 	$scope.userId = $routeParams.userId;
+
+	$log.log('Retrieving user...');
+	$scope.user = User.get({ id: $scope.userId }, function(user) {
+		// update model anything else?
+	});
+
 }]);

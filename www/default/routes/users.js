@@ -48,6 +48,28 @@ router.get('/', function(req, res) {
 	.error(function(err) {
 		res.send(err);
 	});
+});
+
+/* GET single user */
+router.get('/:id', function(req, res) {
+	var users = req.db.get('users');
+	users.findOne({
+		_id : req.params.id
+	},
+	{
+		fields : { 
+			_id : true,
+			firstName : true,
+			lastName: true,
+			status : true
+		}
+	})
+	.success(function(doc) {
+		res.send(doc);
+	})
+	.error(function(err) {
+		res.send(err);
+	});
 
 });
 
