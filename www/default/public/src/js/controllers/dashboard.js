@@ -1,5 +1,4 @@
-var rbControllers = angular.module('rbControllers', []);
-
-rbControllers.controller('DashboardCtrl', ['$scope', function ($scope) {
-	$scope.foo = 'bar';
+angular.module('rbControllers').controller('DashboardCtrl', ['$scope', '$log', function ($scope, $log) {
+	$scope.title = 'Dashboard';
+	$scope.activeMenu = 'dashboard';
 }]);

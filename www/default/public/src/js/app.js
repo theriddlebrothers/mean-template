@@ -6,6 +6,8 @@ var RB = angular.module("rb", [
 	'rbServices'
 ]);
 
+angular.module('rbControllers', []);
+
 RB.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.
 	when('/dashboard', {

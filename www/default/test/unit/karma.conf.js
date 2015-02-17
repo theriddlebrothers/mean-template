@@ -4,6 +4,8 @@ module.exports = function(config) {
     // base path, that will be used to resolve files and exclude
     basePath: '../../',
 
+    background: true,
+
     // testing framework to use (jasmine/mocha/qunit/...)
     frameworks: ['jasmine'],
 
@@ -14,10 +16,8 @@ module.exports = function(config) {
       'bower_components/angular-resource/angular-resource.js',
       'bower_components/angular-bootstrap/ui-bootstrap.js',
       'bower_components/angular-mocks/angular-mocks.js',
-      'public/src/js/app*.js',
-      'public/src/js/services/user*.js', // asterisk needed to prevent race condition when saving file from text editor. Can't find fix??
-      'public/src/js/controllers/user*.js',
-      'test/unit/controllers/user*.js'
+      'public/src/js/**/*.js',
+      'test/unit/**/*.spec.js'
     ],
 
     // list of files / patterns to exclude
@@ -33,7 +33,7 @@ module.exports = function(config) {
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: true,
 
-    reporters: ['spec'],
+    reporters: ['spec', 'coverage'],
 
     colors: true,
 
@@ -47,6 +47,13 @@ module.exports = function(config) {
     // - IE (only Windows)
     browsers: ['Chrome'],
 
+    preprocessors: {
+      'src/js/**/*': ['coverage']
+    },
+
+    coverageReporter: {
+      type: 'text-summary'
+    },
 
     // Continuous Integration mode
     // if true, it capture browsers, run tests and exit

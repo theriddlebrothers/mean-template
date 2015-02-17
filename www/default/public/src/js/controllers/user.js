@@ -1,7 +1,7 @@
-var rbControllers = angular.module('rbControllers', []);
-
-rbControllers.controller('UserListCtrl', ['$scope', '$log', 'User', function ($scope, $log, User) {
-
+angular.module('rbControllers').controller('UserListCtrl', ['$rootScope', '$scope', '$log', 'User', function ($rootScope, $scope, $log, User) {
+	$rootScope.title = "Users";
+	$rootScope.activeMenu = "users";
+	
 	var query = function() {
 		$log.log('Retrieving users...');
 		User.query({
@@ -22,12 +22,11 @@ rbControllers.controller('UserListCtrl', ['$scope', '$log', 'User', function ($s
 		query();
 	};
 
-
 	query();
 	
 }]);
 
 
-rbControllers.controller('UserDetailCtrl', ['$scope', '$routeParams', function($scope, $routeParams) {
+angular.module('rbControllers').controller('UserDetailCtrl', ['$scope', '$routeParams', function($scope, $routeParams) {
 	$scope.userId = $routeParams.userId;
 }]);

@@ -22,7 +22,7 @@ module.exports = function(grunt) {
 			options: {
 				banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
 			},
-			build: {
+			default: {
 				src: 'public/src/js/**/*.js',
 				dest: 'public/dist/js/<%= pkg.name %>.min.js'
 			}
@@ -50,29 +50,25 @@ module.exports = function(grunt) {
 			}
 		},
 		watch: {
-			scripts: {
-				files: ['public/src/**/*'],
-				tasks: ['jshint', 'sass', 'copy', 'uglify'],
-				options: {
-				  spawn: false,
-				}
+			files: ['public/src/**/*'],
+			tasks: ['jshint', 'copy', 'uglify', 'sass'],
+			options: {
+				spawn: false,
 			}
-		},
+		},		
 		// watch our node server for changes
 		nodemon: {
 			default: {
 				script: 'bin/www'
 			}
 		},
-
 		// run watch and nodemon at the same time
 		concurrent: {
-				options: {
+			options: {
 				logConcurrentOutput: true
 			},
 			tasks: ['nodemon', 'watch']
 		},
-
 		karma: {
 			options: {
 				configFile: 'test/unit/karma.conf.js',
@@ -80,7 +76,17 @@ module.exports = function(grunt) {
 			unit: {
 				singleRun: false
 			}
-		}
+		},
+		protractor: {
+			options: {
+				configFile: "test/e2e/conf.js",
+				// Task-specific options go here. 
+				keepAlive: false,
+				noColor: false
+			},
+			e2e: {
+			},
+		},
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -92,10 +98,12 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-nodemon');
 	grunt.loadNpmTasks('grunt-concurrent');
 	grunt.loadNpmTasks('grunt-karma');
+	grunt.loadNpmTasks('grunt-protractor-runner');
 
 	// Default task(s).
-	grunt.registerTask('test', ['karma']);
 	grunt.registerTask('default', ['bower_concat', 'concurrent']);
+	grunt.registerTask('test-unit', ['karma']);
+	grunt.registerTask('test-e2e', ['protractor']);
 	grunt.registerTask('prod', ['bower_concat', 'jshint', 'uglify', 'sass']);
 
 };
