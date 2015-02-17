@@ -3,6 +3,6 @@ module.exports = {
 		url : "localhost:27017/local"
 	},
 	pagination : {
-		perPage : 20
+		perPage : 2
 	}
 }

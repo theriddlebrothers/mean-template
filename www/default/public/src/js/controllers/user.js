@@ -5,7 +5,8 @@ rbControllers.controller('UserListCtrl', ['$scope', '$log', 'User', function ($s
 	var query = function() {
 		$log.log('Retrieving users...');
 		User.query({
-			page : $scope.page
+			page : $scope.page,
+			term : $scope.term
 		}, function(data) {
 			$scope.users = data.users;
 			$scope.page = data._metadata.page;
