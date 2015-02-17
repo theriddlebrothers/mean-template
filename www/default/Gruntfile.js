@@ -71,7 +71,16 @@ module.exports = function(grunt) {
 				logConcurrentOutput: true
 			},
 			tasks: ['nodemon', 'watch']
-		}   
+		},
+
+		karma: {
+			options: {
+				configFile: 'test/unit/karma.conf.js',
+			},
+			unit: {
+				singleRun: false
+			}
+		}
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -82,8 +91,10 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-nodemon');
 	grunt.loadNpmTasks('grunt-concurrent');
+	grunt.loadNpmTasks('grunt-karma');
 
 	// Default task(s).
+	grunt.registerTask('test', ['karma']);
 	grunt.registerTask('default', ['bower_concat', 'concurrent']);
 	grunt.registerTask('prod', ['bower_concat', 'jshint', 'uglify', 'sass']);
 

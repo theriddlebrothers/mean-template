@@ -19,9 +19,24 @@ Utilizes:
 4. `vagrant up`
 5. Grab a cup of coffee while you wait for the server to download and install. This will take a little while depending on your internet connection.
 6. `vagrant ssh`
-7. `cd www/default`
-8. `sudo npm install`
-9. `sudo bower install`
+7. Do stuff!
+
+### App Setup
+1. Install Karma `npm install karma-cli -g`
+2. Install Protractor `npm install protractor -g` and then `webdriver-manager update`
+3. Install Grunt `npm install grunt-cli -g`
+
+### Running App
+Run `grunt`
+
+### Running Unit Tests
+Run `grunt test:unit`
+
+### Running E2E Tests
+Run `webdriver-manager start` and then `protractor test/e2e/conf.js`
+
+### MongoDB
+Use '10.0.33.34:27017/local` as your MongoDB connection string.
 
 Once you run it the first time, node will run a default server and you can access it by visiting http://10.0.33.34 in your browser.
 
