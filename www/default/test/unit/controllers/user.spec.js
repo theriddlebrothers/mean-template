@@ -1,14 +1,15 @@
 describe('RB controllers', function() {
 	describe('Controller: UserListCtrl', function(){
 
-		var httpBackend, scope, log, User, ctrl;
+		var httpBackend, scope, log, User, ctrl, window;
 
 		beforeEach(module('rb'));
 		beforeEach(module('rbServices'));
 
-		beforeEach(inject(function($httpBackend, $rootScope, $controller, $log, _User_) {
+		beforeEach(inject(function($httpBackend, $rootScope, $controller, $log, _User_,
+			$window) {
 			httpBackend = $httpBackend;
-			httpBackend.expectGET('/api/users').respond(
+			httpBackend.expectGET('/api/users?page=1').respond(
 				{ 
 					_metadata : { 
 						page : 5, 
@@ -22,7 +23,7 @@ describe('RB controllers', function() {
 					]
 				}
 			);
-
+			window = $window;
 			scope = $rootScope.$new();
 			log = $log;
 			User = _User_;
@@ -50,7 +51,6 @@ describe('RB controllers', function() {
 			expect(scope.totalCount).toEqual(532);
 		});
 
-
 		it('should update users when page changes', function() {
 			spyOn(User, 'query');
 			scope.page = 2;
@@ -59,12 +59,22 @@ describe('RB controllers', function() {
 		});
 
 
+		it('should update scope with returned user data', function() {
+			httpBackend.flush();
+			User.query();
+			expect(scope.page).toEqual(5);
+			expect(scope.perPage).toEqual(10);
+			expect(scope.pageCount).toEqual(20);
+			expect(scope.totalCount).toEqual(532);
+		});
+
+
 	});
 
 
 	describe('Controller: UserDetailCtrl', function(){
 
-		var scope, log, ctrl, User, routeParams;
+		var scope, log, ctrl, User, routeParams, window;
 
 		beforeEach(module('rb'));
 		beforeEach(module('rbServices'));
@@ -79,12 +89,14 @@ describe('RB controllers', function() {
 					status: 'active'
 				}
 			);
+			window = { history : { back : jasmine.createSpy() } };
 
 			scope = $rootScope.$new();
 			log = $log;
 			routeParams = $routeParams;
 			routeParams.userId = '123abc';
-			ctrl = $controller('UserDetailCtrl', { $scope:scope, $log:log, $routeParams:routeParams, User: _User_});
+			ctrl = $controller('UserDetailCtrl', { $scope:scope, $log:log, 
+													$routeParams:routeParams, User: _User_, $window:window});
 		}));
 
 		it('should set title', function() {
@@ -102,6 +114,11 @@ describe('RB controllers', function() {
 		it('should retrieve user from api', function() {
 			httpBackend.flush();
 			expect(scope.user.firstName).toEqual('John');
+		});
+
+		it('back button sends user back a page', function() {
+			scope.goBack();
+			expect(window.history.back).toHaveBeenCalled();
 		});
 
 	});

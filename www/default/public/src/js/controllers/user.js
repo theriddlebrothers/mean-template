@@ -1,13 +1,29 @@
-angular.module('rbControllers').controller('UserListCtrl', ['$rootScope', '$scope', '$log', 'User', function ($rootScope, $scope, $log, User) {
+angular.module('rbControllers').controller('UserListCtrl', ['$rootScope', '$scope', '$location', '$log', 'User', 
+	function ($rootScope, $scope, $location, $log, User, $window) {
 	$rootScope.title = "Users";
 	$rootScope.activeMenu = "users";
 
-	var query = function() { 
+	var query = {
+		page : 1,
+		term : null
+	};
+
+	var search = $location.search();
+	query.term = search.term || null;
+	query.page = search.page || 1;
+
+	$scope.$watch('term', function(t) {
+		$location.search('term', t);
+	});
+
+	$scope.$watch('page', function(p) {
+		$location.search('page', p);
+	});
+
+	var getUsers = function() { 
 		$log.log('Retrieving users...');
-		User.query({
-			page : $scope.page,
-			term : $scope.term
-		}, function(data) {
+
+		User.query(query, function(data) {
 			$scope.users = data.users;
 			$scope.page = data._metadata.page;
 			$scope.pageCount = data._metadata.pageCount;
@@ -18,15 +34,18 @@ angular.module('rbControllers').controller('UserListCtrl', ['$rootScope', '$scop
 	};
 
 	$scope.pageChanged = function() {
-		query();
+		query.page = $scope.page;
+		query.term = $scope.term;
+		getUsers();
 	};
-
-	query();
 	
+	getUsers();
+
 }]);
 
 
-angular.module('rbControllers').controller('UserDetailCtrl', ['$rootScope', '$scope', '$log', '$routeParams', 'User', function ($rootScope, $scope, $log, $routeParams, User) {
+angular.module('rbControllers').controller('UserDetailCtrl', ['$rootScope', '$scope', '$log', '$routeParams', 
+	'User', '$window', function ($rootScope, $scope, $log, $routeParams, User, $window) {
 	$rootScope.title = "User Details";
 	$rootScope.activeMenu = "users";
 	
@@ -34,7 +53,11 @@ angular.module('rbControllers').controller('UserDetailCtrl', ['$rootScope', '$sc
 
 	$log.log('Retrieving user...');
 	$scope.user = User.get({ id: $scope.userId }, function(user) {
-		// update model anything else?
+		// update model anything else? 
 	});
+
+	$scope.goBack = function() {
+		$window.history.back();
+	};
 
 }]);

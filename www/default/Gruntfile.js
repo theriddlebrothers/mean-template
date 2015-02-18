@@ -70,7 +70,7 @@ module.exports = function(grunt) {
 			all: {
 				script: 'bin/www',
 				options : {
-					ignore : ['node_modules/**', 'public/**', '.sass_cache/']
+					ignore : ['coverage/**', 'node_modules/**', 'public/**', '.sass_cache/']
 				}
 				//watch: ['server.js', 'routes/*.js', 'lib/**/*', 'config/**/*']
 			}
